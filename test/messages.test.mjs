@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { clampDelay, isValidDelayStep } from "../extension/messages.js";
+import {
+  clampDelay,
+  isValidDelayStep,
+  MESSAGE_TYPES,
+  normalizeDelay
+} from "../extension/messages.js";
 
 describe("delay validation", () => {
   it("clamps delay to the supported 0-1000 ms range", () => {
@@ -13,5 +18,16 @@ describe("delay validation", () => {
     assert.equal(isValidDelayStep(200), true);
     assert.equal(isValidDelayStep(205), true);
     assert.equal(isValidDelayStep(203), false);
+  });
+
+  it("normalizes arbitrary delay values to the nearest supported step", () => {
+    assert.equal(normalizeDelay(-1), 0);
+    assert.equal(normalizeDelay(202), 200);
+    assert.equal(normalizeDelay(203), 205);
+    assert.equal(normalizeDelay(1001), 1000);
+  });
+
+  it("defines an offscreen state query message", () => {
+    assert.equal(MESSAGE_TYPES.OFFSCREEN_GET_STATE, "OFFSCREEN_GET_STATE");
   });
 });

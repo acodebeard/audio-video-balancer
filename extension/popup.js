@@ -1,35 +1,164 @@
+import {
+  DELAY_STEP_MS,
+  MAX_DELAY_MS,
+  MESSAGE_TARGETS,
+  MESSAGE_TYPES,
+  MIN_DELAY_MS,
+  normalizeDelay
+} from "./messages.js";
+
 const slider = document.querySelector("#delay-slider");
 const value = document.querySelector("#delay-value");
+const status = document.querySelector(".status");
+const statusDot = status.querySelector(".status-dot");
+const captureButton = document.querySelector(".capture-button");
 const presetButtons = document.querySelectorAll("[data-delay]");
 const stepButtons = document.querySelectorAll("[data-step]");
 
-function clampDelay(delay) {
-  return Math.min(1000, Math.max(0, delay));
+let currentState = {
+  status: "idle",
+  tabId: null,
+  delayMs: normalizeDelay(Number(slider.value)),
+  error: null
+};
+
+function canUseRuntimeMessages() {
+  return Boolean(globalThis.chrome?.runtime?.sendMessage);
 }
 
-function setDelay(delay) {
-  const nextDelay = clampDelay(delay);
-  slider.value = String(nextDelay);
-  value.textContent = String(nextDelay);
+function normalizeState(state) {
+  return {
+    status: state?.status ?? "idle",
+    tabId: state?.tabId ?? null,
+    delayMs: normalizeDelay(state?.delayMs ?? currentState.delayMs),
+    error: state?.error ?? null
+  };
+}
+
+async function sendBackgroundMessage(type, payload = {}) {
+  if (!canUseRuntimeMessages()) {
+    if (type === MESSAGE_TYPES.SET_DELAY) {
+      currentState = normalizeState({
+        ...currentState,
+        delayMs: payload.delayMs
+      });
+    } else if (type === MESSAGE_TYPES.START_CAPTURE) {
+      currentState = normalizeState({
+        ...currentState,
+        status: "capturing",
+        error: null
+      });
+    } else if (type === MESSAGE_TYPES.STOP_CAPTURE) {
+      currentState = normalizeState({
+        ...currentState,
+        status: "idle",
+        error: null
+      });
+    }
+
+    return currentState;
+  }
+
+  const response = await chrome.runtime.sendMessage({
+    target: MESSAGE_TARGETS.BACKGROUND,
+    type,
+    ...payload
+  });
+
+  return normalizeState(response);
+}
+
+function setStatus(label, stateStatus) {
+  status.classList.toggle("ready", stateStatus === "idle");
+  status.classList.toggle("capturing", stateStatus === "capturing");
+  status.classList.toggle("error", stateStatus === "error");
+  status.replaceChildren(statusDot, document.createTextNode(label));
+}
+
+function renderState(state) {
+  currentState = normalizeState(state);
+
+  slider.min = String(MIN_DELAY_MS);
+  slider.max = String(MAX_DELAY_MS);
+  slider.step = String(DELAY_STEP_MS);
+  slider.value = String(currentState.delayMs);
+  value.textContent = String(currentState.delayMs);
 
   presetButtons.forEach((button) => {
-    button.classList.toggle("selected", button.dataset.delay === String(nextDelay));
+    button.classList.toggle(
+      "selected",
+      normalizeDelay(Number(button.dataset.delay)) === currentState.delayMs
+    );
   });
+
+  const isCapturing = currentState.status === "capturing";
+  const isStarting = currentState.status === "starting";
+  captureButton.textContent = isCapturing || isStarting ? "Stop" : "Start";
+  captureButton.disabled = isStarting;
+
+  if (currentState.status === "error") {
+    setStatus("Error", currentState.status);
+  } else if (isCapturing) {
+    setStatus("Live", currentState.status);
+  } else if (isStarting) {
+    setStatus("Starting", currentState.status);
+  } else {
+    setStatus("Ready", currentState.status);
+  }
 }
 
+async function updateFromBackground(type, payload = {}) {
+  try {
+    renderState(await sendBackgroundMessage(type, payload));
+  } catch (error) {
+    renderState({
+      ...currentState,
+      status: "error",
+      error: error instanceof Error ? error.message : String(error)
+    });
+  }
+}
+
+function requestDelay(delayMs) {
+  const nextDelayMs = normalizeDelay(delayMs);
+  renderState({
+    ...currentState,
+    delayMs: nextDelayMs
+  });
+  void updateFromBackground(MESSAGE_TYPES.SET_DELAY, { delayMs: nextDelayMs });
+}
+
+captureButton.addEventListener("click", () => {
+  const isStopping =
+    currentState.status === "capturing" || currentState.status === "starting";
+  const type = isStopping ? MESSAGE_TYPES.STOP_CAPTURE : MESSAGE_TYPES.START_CAPTURE;
+
+  if (!isStopping) {
+    renderState({
+      ...currentState,
+      status: "starting",
+      error: null
+    });
+  }
+
+  void updateFromBackground(type);
+});
+
 slider.addEventListener("input", () => {
-  setDelay(Number(slider.value));
+  requestDelay(Number(slider.value));
 });
 
 presetButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    setDelay(Number(button.dataset.delay));
+    requestDelay(Number(button.dataset.delay));
   });
 });
 
 stepButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    setDelay(Number(slider.value) + Number(button.dataset.step));
+    requestDelay(Number(slider.value) + Number(button.dataset.step));
   });
 });
 
+renderState(currentState);
+void updateFromBackground(MESSAGE_TYPES.GET_STATE);
