@@ -25,16 +25,16 @@
           </div>
           <div class="status ready">
             <span class="status-dot" aria-hidden="true"></span>
-            Ready
+            Off
           </div>
         </header>
 
         <section class="now-playing" aria-label="Active tab">
           <div>
-            <p class="label">Tab audio</p>
-            <p class="tab-title">Baseball stream - Live</p>
+            <p class="label">Audio delay</p>
+            <p class="tab-title">Current tab</p>
           </div>
-          <button class="capture-button" type="button">Start</button>
+          <button class="capture-button" type="button" aria-label="Turn audio delay on">Off</button>
         </section>
 
         <section class="delay-readout" aria-label="Delay value">
@@ -60,10 +60,9 @@
 
         <footer class="popup-footer">
           <button class="secondary" type="button">Reset</button>
-          <p>Audio is delayed for this tab only.</p>
+          <p>Audio delay applies to this tab only.</p>
         </footer>
       </section>
     </main>
   </body>
 </html>
-

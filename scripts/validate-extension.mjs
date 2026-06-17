@@ -52,6 +52,24 @@ if (!popup.includes('src="./popup.js"') || !popup.includes('type="module"')) {
   throw new Error("Popup HTML must load popup.js as a module script.");
 }
 
+for (const requiredPopupText of ["Audio delay", "Current tab", ">Off<"]) {
+  if (!popup.includes(requiredPopupText)) {
+    throw new Error(`Popup HTML is missing clearer audio delay state text: ${requiredPopupText}`);
+  }
+}
+
+for (const forbiddenPopupText of ["Baseball stream - Live", ">Start<", ">Stop<"]) {
+  if (popup.includes(forbiddenPopupText)) {
+    throw new Error(`Popup HTML still contains unclear placeholder text: ${forbiddenPopupText}`);
+  }
+}
+
+for (const requiredPopupScriptText of ["\"On\"", "\"Off\"", "Turn audio delay on", "Turn audio delay off"]) {
+  if (!popupScript.includes(requiredPopupScriptText)) {
+    throw new Error(`popup.js is missing clearer audio delay state text: ${requiredPopupScriptText}`);
+  }
+}
+
 if (!offscreen.includes('src="./offscreen.js"') || !offscreen.includes('type="module"')) {
   throw new Error("Offscreen HTML must load offscreen.js as a module script.");
 }

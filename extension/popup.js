@@ -93,17 +93,21 @@ function renderState(state) {
 
   const isCapturing = currentState.status === "capturing";
   const isStarting = currentState.status === "starting";
-  captureButton.textContent = isCapturing || isStarting ? "Stop" : "Start";
+  captureButton.textContent = isCapturing ? "On" : isStarting ? "Turning on" : "Off";
+  captureButton.setAttribute(
+    "aria-label",
+    isCapturing || isStarting ? "Turn audio delay off" : "Turn audio delay on"
+  );
   captureButton.disabled = isStarting;
 
   if (currentState.status === "error") {
     setStatus("Error", currentState.status);
   } else if (isCapturing) {
-    setStatus("Live", currentState.status);
+    setStatus("On", currentState.status);
   } else if (isStarting) {
-    setStatus("Starting", currentState.status);
+    setStatus("Turning on", currentState.status);
   } else {
-    setStatus("Ready", currentState.status);
+    setStatus("Off", currentState.status);
   }
 }
 
