@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Audio Video Balancer</title>
+    <link rel="stylesheet" href="./popup.css">
+  </head>
+  <body>
+    <main class="popup-shell">
+      <header class="popup-header">
+        <div>
+          <p class="eyebrow">Current tab</p>
+          <h1>Audio Delay</h1>
+        </div>
+        <div class="status ready">
+          <span class="status-dot" aria-hidden="true"></span>
+          Ready
+        </div>
+      </header>
+
+      <section class="now-playing" aria-label="Active tab">
+        <div>
+          <p class="label">Tab audio</p>
+          <p class="tab-title">Baseball stream - Live</p>
+        </div>
+        <button class="capture-button" type="button">Start</button>
+      </section>
+
+      <section class="delay-readout" aria-label="Delay value">
+        <p class="label">Delay</p>
+        <div class="delay-value">
+          <span id="delay-value">200</span>
+          <small>ms</small>
+        </div>
+      </section>
+
+      <section class="slider-row" aria-label="Delay controls">
+        <button class="step-button" type="button" data-step="-5" aria-label="Decrease delay by 5 milliseconds">-</button>
+        <input id="delay-slider" type="range" min="0" max="1000" step="5" value="200" aria-label="Audio delay in milliseconds">
+        <button class="step-button" type="button" data-step="5" aria-label="Increase delay by 5 milliseconds">+</button>
+      </section>
+
+      <section class="preset-grid" aria-label="Delay presets">
+        <button type="button" data-delay="0">0</button>
+        <button type="button" data-delay="100">100</button>
+        <button type="button" class="selected" data-delay="200">200</button>
+        <button type="button" data-delay="300">300</button>
+      </section>
+
+      <footer class="popup-footer">
+        <button class="secondary" type="button" data-delay="0">Reset</button>
+        <p>Audio is delayed for this tab only.</p>
+      </footer>
+    </main>
+    <script src="./popup.js" type="module"></script>
+  </body>
+</html>
+
