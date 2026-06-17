@@ -711,4 +711,3 @@ Expected: Chrome accepts the Manifest V3 extension.
 Run: `npm run serve:fixture`, open `http://localhost:4173`, start the fixture, click the extension, start capture, and set delay to `200 ms`.
 
 Expected: the beep/flash alignment visibly improves at `200 ms` compared with `0 ms`.
-
