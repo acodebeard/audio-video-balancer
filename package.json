@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build-extension.mjs",
-    "check": "node scripts/check-source-policy.mjs && node scripts/check-mock.mjs && node scripts/validate-extension.mjs",
-    "package": "npm run build && node scripts/package-extension.mjs"
+    "check": "node scripts/check-source-policy.mjs && node scripts/check-mock.mjs && node scripts/validate-extension.mjs && npm test",
+    "package": "npm run build && node scripts/package-extension.mjs",
+    "test": "node --test"
   },
   "devDependencies": {
     "archiver": "^8.0.0"
