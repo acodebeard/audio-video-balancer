@@ -8,9 +8,14 @@ const mock = await readFile(mockPath, "utf8");
 
 const requiredSnippets = [
   "Audio Delay",
+  "Audio delay",
+  "Current tab",
+  ">Off<",
+  "controls-disabled",
+  "disabled",
   "step=\"5\"",
   "200",
-  "Audio is delayed for this tab only."
+  "Audio delay applies to this tab only."
 ];
 
 for (const snippet of requiredSnippets) {
@@ -19,5 +24,10 @@ for (const snippet of requiredSnippets) {
   }
 }
 
-console.log("Popup mock check passed.");
+for (const forbiddenSnippet of ["Baseball stream - Live", ">Start<", ">Stop<"]) {
+  if (mock.includes(forbiddenSnippet)) {
+    throw new Error(`Popup mock still contains unclear placeholder text: ${forbiddenSnippet}`);
+  }
+}
 
+console.log("Popup mock check passed.");

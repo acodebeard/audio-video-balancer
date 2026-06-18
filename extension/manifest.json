@@ -3,9 +3,19 @@
   "name": "Audio Video Balancer",
   "description": "Delay the current tab audio when audio is ahead of video.",
   "version": "0.0.0",
+  "minimum_chrome_version": "116",
+  "permissions": [
+    "activeTab",
+    "offscreen",
+    "storage",
+    "tabCapture"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
   "action": {
     "default_title": "Audio Video Balancer",
     "default_popup": "popup.html"
   }
 }
-

@@ -6,8 +6,10 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build-extension.mjs",
-    "check": "node scripts/check-source-policy.mjs && node scripts/check-mock.mjs && node scripts/validate-extension.mjs",
-    "package": "npm run build && node scripts/package-extension.mjs"
+    "check": "node scripts/check-source-policy.mjs && node scripts/check-mock.mjs && node scripts/check-sync-fixture.mjs && node scripts/validate-extension.mjs && npm test",
+    "package": "npm run build && node scripts/package-extension.mjs",
+    "serve:fixture": "node scripts/serve-sync-fixture.mjs",
+    "test": "node --test"
   },
   "devDependencies": {
     "archiver": "^8.0.0"

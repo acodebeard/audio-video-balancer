@@ -1,4 +1,5 @@
 node_modules/
+.worktrees/
 dist/
 release/
 coverage/
@@ -8,4 +9,3 @@ coverage/
 *.crx
 *.pem
 .DS_Store
-

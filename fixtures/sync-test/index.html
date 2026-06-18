@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Audio Video Balancer Sync Fixture</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="sync-test.js"></script>
+  </head>
+  <body>
+    <main class="fixture-shell">
+      <section class="fixture-panel" aria-labelledby="fixture-title">
+        <div class="heading-row">
+          <div>
+            <p class="eyebrow">Controlled sync test</p>
+            <h1 id="fixture-title">Audio Video Balancer Sync Fixture</h1>
+          </div>
+          <p class="status" id="loop-status" aria-live="polite">Stopped</p>
+        </div>
+
+        <div
+          class="flash-target"
+          id="flash-target"
+          role="img"
+          aria-label="Visual flash target"
+        >
+          <span>FLASH</span>
+        </div>
+
+        <div class="controls" aria-label="Sync fixture controls">
+          <label class="field" for="lead-ms">
+            <span>Audio lead</span>
+            <select id="lead-ms" name="lead-ms">
+              <option value="100">100 ms</option>
+              <option value="200" selected>200 ms</option>
+              <option value="300">300 ms</option>
+            </select>
+          </label>
+
+          <div class="button-row">
+            <button id="start-loop" type="button">Start Loop</button>
+            <button id="stop-loop" type="button" disabled>Stop</button>
+          </div>
+        </div>
+
+        <p class="instructions">
+          The beep plays first. Set the extension delay equal to the selected
+          audio lead so the beep and flash line up.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

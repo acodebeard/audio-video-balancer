@@ -25,19 +25,19 @@
           </div>
           <div class="status ready">
             <span class="status-dot" aria-hidden="true"></span>
-            Ready
+            Off
           </div>
         </header>
 
         <section class="now-playing" aria-label="Active tab">
           <div>
-            <p class="label">Tab audio</p>
-            <p class="tab-title">Baseball stream - Live</p>
+            <p class="label">Audio delay</p>
+            <p class="tab-title">Current tab</p>
           </div>
-          <button class="capture-button" type="button">Start</button>
+          <button class="capture-button" type="button" aria-label="Turn audio delay on">Off</button>
         </section>
 
-        <section class="delay-readout" aria-label="Delay value">
+        <section class="delay-readout controls-disabled" aria-label="Delay value" aria-disabled="true">
           <p class="label">Delay</p>
           <div class="delay-value">
             <span>200</span>
@@ -45,25 +45,24 @@
           </div>
         </section>
 
-        <section class="slider-row" aria-label="Delay controls">
-          <button class="step-button" type="button" aria-label="Decrease delay by 5 milliseconds">-</button>
-          <input type="range" min="0" max="1000" step="5" value="200" aria-label="Audio delay in milliseconds">
-          <button class="step-button" type="button" aria-label="Increase delay by 5 milliseconds">+</button>
+        <section class="slider-row controls-disabled" aria-label="Delay controls" aria-disabled="true">
+          <button class="step-button" type="button" aria-label="Decrease delay by 5 milliseconds" disabled>-</button>
+          <input type="range" min="0" max="1000" step="5" value="200" aria-label="Audio delay in milliseconds" disabled>
+          <button class="step-button" type="button" aria-label="Increase delay by 5 milliseconds" disabled>+</button>
         </section>
 
-        <section class="preset-grid" aria-label="Delay presets">
-          <button type="button">0</button>
-          <button type="button">100</button>
-          <button type="button" class="selected">200</button>
-          <button type="button">300</button>
+        <section class="preset-grid controls-disabled" aria-label="Delay presets" aria-disabled="true">
+          <button type="button" disabled>0</button>
+          <button type="button" disabled>100</button>
+          <button type="button" class="selected" disabled>200</button>
+          <button type="button" disabled>300</button>
         </section>
 
-        <footer class="popup-footer">
-          <button class="secondary" type="button">Reset</button>
-          <p>Audio is delayed for this tab only.</p>
+        <footer class="popup-footer controls-disabled" aria-disabled="true">
+          <button class="secondary" type="button" disabled>Reset</button>
+          <p>Audio delay applies to this tab only.</p>
         </footer>
       </section>
     </main>
   </body>
 </html>
-
