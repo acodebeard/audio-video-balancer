@@ -52,7 +52,7 @@ if (!popup.includes('src="./popup.js"') || !popup.includes('type="module"')) {
   throw new Error("Popup HTML must load popup.js as a module script.");
 }
 
-for (const requiredPopupText of ["Audio delay", "Current tab", ">Off<"]) {
+for (const requiredPopupText of ["Audio delay", "Current tab", ">Off<", "controls-disabled", "disabled"]) {
   if (!popup.includes(requiredPopupText)) {
     throw new Error(`Popup HTML is missing clearer audio delay state text: ${requiredPopupText}`);
   }
@@ -67,6 +67,12 @@ for (const forbiddenPopupText of ["Baseball stream - Live", ">Start<", ">Stop<"]
 for (const requiredPopupScriptText of ["\"On\"", "\"Off\"", "Turn audio delay on", "Turn audio delay off"]) {
   if (!popupScript.includes(requiredPopupScriptText)) {
     throw new Error(`popup.js is missing clearer audio delay state text: ${requiredPopupScriptText}`);
+  }
+}
+
+for (const requiredPopupScriptText of ["delayControls", "delaySections", "controlsDisabled"]) {
+  if (!popupScript.includes(requiredPopupScriptText)) {
+    throw new Error(`popup.js must toggle disabled delay controls: ${requiredPopupScriptText}`);
   }
 }
 

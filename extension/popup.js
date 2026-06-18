@@ -14,6 +14,10 @@ const statusDot = status.querySelector(".status-dot");
 const captureButton = document.querySelector(".capture-button");
 const presetButtons = document.querySelectorAll("[data-delay]");
 const stepButtons = document.querySelectorAll("[data-step]");
+const delayControls = [slider, ...presetButtons, ...stepButtons];
+const delaySections = document.querySelectorAll(
+  ".delay-readout, .slider-row, .preset-grid, .popup-footer"
+);
 
 let currentState = {
   status: "idle",
@@ -93,6 +97,17 @@ function renderState(state) {
 
   const isCapturing = currentState.status === "capturing";
   const isStarting = currentState.status === "starting";
+  const controlsDisabled = !isCapturing;
+
+  delayControls.forEach((control) => {
+    control.disabled = controlsDisabled;
+  });
+
+  delaySections.forEach((section) => {
+    section.classList.toggle("controls-disabled", controlsDisabled);
+    section.setAttribute("aria-disabled", String(controlsDisabled));
+  });
+
   captureButton.textContent = isCapturing ? "On" : isStarting ? "Turning on" : "Off";
   captureButton.setAttribute(
     "aria-label",

@@ -175,10 +175,24 @@ h1 {
   border-radius: 8px;
   color: white;
   padding: 16px;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease,
+    opacity 120ms ease;
 }
 
 .delay-readout .label {
   color: #aeb8c7;
+}
+
+.delay-readout.controls-disabled {
+  background: #e7ebf1;
+  color: #778293;
+}
+
+.delay-readout.controls-disabled .label,
+.delay-readout.controls-disabled small {
+  color: #8d97a6;
 }
 
 .delay-value {
@@ -216,9 +230,23 @@ h1 {
   width: 40px;
 }
 
+.step-button:disabled,
+.preset-grid button:disabled,
+.secondary:disabled {
+  background: #eef1f5;
+  border-color: #d9dee7;
+  color: #9aa3af;
+  cursor: not-allowed;
+}
+
 input[type="range"] {
   accent-color: #1f6feb;
   width: 100%;
+}
+
+input[type="range"]:disabled {
+  accent-color: #9aa3af;
+  cursor: not-allowed;
 }
 
 .preset-grid {
@@ -255,6 +283,14 @@ input[type="range"] {
   margin: 0;
   max-width: 206px;
   text-align: right;
+}
+
+.controls-disabled {
+  opacity: 0.68;
+}
+
+.popup-footer.controls-disabled p {
+  color: #8d97a6;
 }
 
 @media (max-width: 460px) {

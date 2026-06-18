@@ -11,6 +11,8 @@ const requiredSnippets = [
   "Audio delay",
   "Current tab",
   ">Off<",
+  "controls-disabled",
+  "disabled",
   "step=\"5\"",
   "200",
   "Audio delay applies to this tab only."
